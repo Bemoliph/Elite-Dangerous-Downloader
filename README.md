@@ -13,5 +13,5 @@ This is an alternative client downloader for Elite: Dangerous.  Although the off
 3. Run the script and enjoy your launcherless download!
 
 ### Troubleshooting ###
-* Is there any way to verify the files were downloaded correctly?
+#### Is there any way to verify the files were downloaded correctly? ####
 Log into the official launcher, then click your e-mail address > Validate Game Files.
