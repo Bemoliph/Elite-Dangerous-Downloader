@@ -12,6 +12,13 @@ def generateDirectories(path):
 	if not os.path.isdir(dir):
 		os.makedirs(dir)
 
+def getPatchManifest(manifestURL):
+	compressedManifest = StringIO.StringIO(urllib.urlopen(manifestURL).read())
+	decompressedManifest = gzip.GzipFile(fileobj=compressedManifest)
+	parsedManifest = ElementTree.fromstring(decompressedManifest.read())
+	
+	return parsedManifest
+
 def alreadyHaveAsset(downloadPath, assetHash):
 	if os.path.isfile(downloadPath):
 		# Asset exists on disk, but need to check version
@@ -23,13 +30,6 @@ def alreadyHaveAsset(downloadPath, assetHash):
 	else:
 		# Asset doesn't exist on disk
 		return False
-
-def getPatchManifest(manifestURL):
-	compressedManifest = StringIO.StringIO(urllib.urlopen(manifestURL).read())
-	decompressedManifest = gzip.GzipFile(fileobj=compressedManifest)
-	parsedManifest = ElementTree.fromstring(decompressedManifest.read())
-	
-	return parsedManifest
 
 def downloadAssets(manifest, downloadDir):
 	assetCount = len(manifest)
@@ -53,6 +53,7 @@ def downloadAssets(manifest, downloadDir):
 if __name__ == "__main__":
 	# TODO: Automatically determine manifest URL
 	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Beta2.02_Final+%282014.10.01.44046%29.xml.gz"
+	# TODO: Automatically determine download directory
 	downloadDir = "E:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002"
 	
 	generateDirectories(downloadDir)
