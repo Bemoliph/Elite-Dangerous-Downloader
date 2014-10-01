@@ -1,6 +1,6 @@
 # README #
 
-This is an alternative client downloader for Elite: Dangerous.  Although the official launcher is still required to log in and play, this script allows players to bypass the launcher's tendency to be unresponsive or stall out for very long periods while downloading.
+This is an alternative client downloader for Elite: Dangerous.  Although the official launcher is still required to log in and play, this script allows players to bypass the launcher's tendency to be unresponsive or stall out for very long periods while downloading and get the game much quicker.
 
 ### Requirements ###
 
