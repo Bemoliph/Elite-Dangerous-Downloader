@@ -14,4 +14,4 @@ This is an alternative client downloader for Elite: Dangerous.  Although the off
 
 ### Troubleshooting ###
 #### Is there any way to verify the files were downloaded correctly? ####
-Log into the official launcher, then click your e-mail address > Validate Game Files.
+Log into the official launcher, then click your account name (top) > Validate Game Files.
