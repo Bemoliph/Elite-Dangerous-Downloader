@@ -9,7 +9,7 @@ This is an alternative client downloader for Elite: Dangerous.  Although the off
 ### Usage ###
 
 1. Set manifestURL to the URL of the latest patch manifest.
-2. Set downloadDir to the installation directory for Elite: Dangerous (e.g., "E:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002").  Note the use of \\ versus \ because Python and Windows.
+2. Set downloadDir to the installation directory for Elite: Dangerous (e.g., "E:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002").  Note the use of double \ because Python and Windows.
 3. Run the script and enjoy your launcherless download!
 
 ### Troubleshooting ###
