@@ -52,7 +52,7 @@ def downloadAssets(manifest, downloadDir):
 
 if __name__ == "__main__":
 	# TODO: Automatically determine manifest URL
-	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Beta2.02_Final+%282014.10.01.44046%29.xml.gz"
+	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Beta2.05_Final+%282014.10.08.44726%29.xml.gz"
 	# TODO: Automatically determine download directory
 	downloadDir = "E:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002"
 	
