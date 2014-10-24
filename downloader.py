@@ -1,7 +1,7 @@
 import gzip
 import hashlib
-import StringIO
 import os
+import StringIO
 import sys
 import urllib
 
@@ -41,6 +41,24 @@ def reportFileProgress(blockNumber, blockSize, fileSize):
 	
 	print "\r\t%.2f MB / %.2f MB (%.2f%%)" % (currentSize, fileSize, percentComplete),
 
+def getAsset(assetNumber, assetCount, assetRelPath, assetURL, downloadPath):
+	print "Downloading file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
+	
+	downloaded = False
+	currentTry = 1
+	maxTries = 5
+	
+	while not downloaded and currentTry <= maxTries:
+		try:
+			urllib.urlretrieve(assetURL, downloadPath, reportFileProgress)
+			downloaded = True
+		except IOError:
+			print 
+			print "Failed to download, retry %d of %d" % (currentTry, maxTries)
+			currentTry += 1
+	
+	print 
+
 def downloadAssets(manifest, downloadDir):
 	assetCount = len(manifest)
 
@@ -57,9 +75,7 @@ def downloadAssets(manifest, downloadDir):
 		if alreadyHaveAsset(downloadPath, assetHash):
 			print "Skipping file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
 		else:
-			print "Downloading file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
-			urllib.urlretrieve(assetURL, downloadPath, reportFileProgress)
-			print 
+			getAsset(assetNumber+1, assetCount, assetRelPath, assetURL, downloadPath)
 
 def getInstallPathFromRegistry():
 	import _winreg
