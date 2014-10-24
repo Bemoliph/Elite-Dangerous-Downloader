@@ -2,6 +2,7 @@ import gzip
 import hashlib
 import StringIO
 import os
+import sys
 import urllib
 
 from xml.etree import ElementTree
@@ -31,6 +32,17 @@ def alreadyHaveAsset(downloadPath, assetHash):
 		# Asset doesn't exist on disk
 		return False
 
+def reportFileProgress(blockNumber, blockSize, fileSize):
+	blockSize /= 1048576.0 # Bytes -> Megabytes
+	fileSize /= 1048576.0 # Bytes -> Megabytes
+	
+	currentSize = blockNumber * blockSize
+	percentComplete = min(100.0 * currentSize/fileSize, 100.00)
+	
+	status = "%.2f MB / %.2f MB (%.2f%%)" % (currentSize, fileSize, percentComplete)
+	# Use DELETE characters to rewrite percentage in place http://stackoverflow.com/a/22776
+	print status + chr(8)*(len(status)+1),
+
 def downloadAssets(manifest, downloadDir):
 	assetCount = len(manifest)
 
@@ -45,17 +57,36 @@ def downloadAssets(manifest, downloadDir):
 		generateDirectories(downloadPath)
 		
 		if alreadyHaveAsset(downloadPath, assetHash):
-			print "Skipping file %d of %d: (%.2f MB) %s" % (assetNumber+1, assetCount, assetSize, assetRelPath)
+			print "Skipping file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
 		else:
-			print "Downloading file %d of %d: (%.2f MB) %s" % (assetNumber+1, assetCount, assetSize, assetRelPath)
-			urllib.urlretrieve(assetURL, downloadPath)
+			print "Downloading file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
+			urllib.urlretrieve(assetURL, downloadPath, reportFileProgress)
+			print chr(8) # Clean up extra space from reportFileProgress() (TODO: Use a "real" progress bar one day)
+
+def getInstallPathFromRegistry():
+	# Let's try to auto-detect Elite: Dangerous install directory via Windows Registry
+	import _winreg
+	
+	edInstallKey = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{696F8871-C91D-4CB1-825D-36BE18065575}_is1")
+	installDir = _winreg.QueryValueEx(edInstallKey, "InstallLocation")[0]
+	
+	downloadDir = os.path.join(installDir, "Products\\FORC-FDEV-D-1002")
+	
+	return downloadDir
 
 if __name__ == "__main__":
 	# TODO: Automatically determine manifest URL
 	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Beta2.06_Final+%282014.10.14.45307%29.xml.gz"
-	# TODO: Automatically determine download directory
-	downloadDir = "C:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002"
 	
-	generateDirectories(downloadDir)
-	manifest = getPatchManifest(manifestURL)
-	downloadAssets(manifest, downloadDir)
+	# Manually set downloadDir here, else it will be autodetected (on Windows)
+	# downloadDir = "C:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002"
+	downloadDir = ""
+	if not downloadDir and sys.platform == "win32":
+		downloadDir = getInstallPathFromRegistry()
+	
+	if os.path.isdir(downloadDir):
+		manifest = getPatchManifest(manifestURL)
+		downloadAssets(manifest, downloadDir)
+	else:
+		print "downloadDir does not exist.  Make sure it's correct and that you've started the download in the official launcher at least once."
+		print "downloadDir = %s" % downloadDir
