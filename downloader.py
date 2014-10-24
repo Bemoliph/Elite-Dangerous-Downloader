@@ -39,9 +39,7 @@ def reportFileProgress(blockNumber, blockSize, fileSize):
 	currentSize = blockNumber * blockSize
 	percentComplete = min(100.0 * currentSize/fileSize, 100.00)
 	
-	status = "%.2f MB / %.2f MB (%.2f%%)" % (currentSize, fileSize, percentComplete)
-	# Use DELETE characters to rewrite percentage in place http://stackoverflow.com/a/22776
-	print status + chr(8)*(len(status)+1),
+	print "\r\t%.2f MB / %.2f MB (%.2f%%)" % (currentSize, fileSize, percentComplete),
 
 def downloadAssets(manifest, downloadDir):
 	assetCount = len(manifest)
@@ -61,7 +59,7 @@ def downloadAssets(manifest, downloadDir):
 		else:
 			print "Downloading file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
 			urllib.urlretrieve(assetURL, downloadPath, reportFileProgress)
-			print chr(8) # Clean up extra space from reportFileProgress() (TODO: Use a "real" progress bar one day)
+			print 
 
 def getInstallPathFromRegistry():
 	import _winreg
