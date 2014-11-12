@@ -42,7 +42,7 @@ def reportFileProgress(blockNumber, blockSize, fileSize):
 	print "\r\t%.2f MB / %.2f MB (%.2f%%)" % (currentSize, fileSize, percentComplete),
 
 def getAsset(assetNumber, assetCount, assetRelPath, assetURL, downloadPath):
-	print "Downloading file %d of %d: %s" % (assetNumber+1, assetCount, assetRelPath)
+	print "Downloading file %d of %d: %s" % (assetNumber, assetCount, assetRelPath)
 	
 	downloaded = False
 	currentTry = 1
