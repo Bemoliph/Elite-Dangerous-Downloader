@@ -89,7 +89,7 @@ def getInstallPathFromRegistry():
 
 if __name__ == "__main__":
 	# TODO: Automatically determine manifest URL
-	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Gamma1.04_Final+%282014.11.28.52088%29.xml.gz"
+	manifestURL = "http://cdn.zaonce.net/elitedangerous/win/manifests/Retail1.0_Final+%282014.12.16.54180%29.xml.gz"
 	
 	downloadDir = "C:\\Program Files (x86)\\Frontier\\EDLaunch\\Products\\FORC-FDEV-D-1002"
 	if not os.path.isdir(downloadDir) and sys.platform == "win32":
